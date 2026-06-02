@@ -1,0 +1,152 @@
+[
+  {
+    "id": "node_red_flow_industrial_energy",
+    "type": "tab",
+    "label": "Industrial Energy Monitoring",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "inject_machine_01",
+    "type": "inject",
+    "z": "node_red_flow_industrial_energy",
+    "name": "Máquina 01",
+    "props": [
+      {
+        "p": "payload",
+        "v": "{\"deviceId\":\"maq-001\",\"deviceKey\":\"123e4567e89b12d3a456426614174000\",\"machineName\":\"Máquina 01\",\"sector\":\"Produção\",\"consumptionKwh\":55,\"voltage\":220,\"current\":12.5,\"status\":\"NORMAL\",\"timestamp\":\"2026-05-24T14:30:00\"}",
+        "vt": "json"
+      }
+    ],
+    "repeat": "2",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 150,
+    "y": 100,
+    "wires": [["mqtt_publish"]]
+  },
+  {
+    "id": "inject_machine_02",
+    "type": "inject",
+    "z": "node_red_flow_industrial_energy",
+    "name": "Máquina 02",
+    "props": [
+      {
+        "p": "payload",
+        "v": "{\"deviceId\":\"maq-002\",\"deviceKey\":\"123e4567e89b12d3a456426614174001\",\"machineName\":\"Máquina 02\",\"sector\":\"Corte\",\"consumptionKwh\":82,\"voltage\":220,\"current\":18.5,\"status\":\"ATENCAO\",\"timestamp\":\"2026-05-24T14:30:00\"}",
+        "vt": "json"
+      }
+    ],
+    "repeat": "2",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 150,
+    "y": 160,
+    "wires": [["mqtt_publish"]]
+  },
+  {
+    "id": "inject_machine_03",
+    "type": "inject",
+    "z": "node_red_flow_industrial_energy",
+    "name": "Máquina 03",
+    "props": [
+      {
+        "p": "payload",
+        "v": "{\"deviceId\":\"maq-003\",\"deviceKey\":\"123e4567e89b12d3a456426614174002\",\"machineName\":\"Máquina 03\",\"sector\":\"Embalagem\",\"consumptionKwh\":96,\"voltage\":220,\"current\":21.5,\"status\":\"CRITICO\",\"timestamp\":\"2026-05-24T14:30:00\"}",
+        "vt": "json"
+      }
+    ],
+    "repeat": "2",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 150,
+    "y": 220,
+    "wires": [["mqtt_publish"]]
+  },
+  {
+    "id": "inject_machine_04",
+    "type": "inject",
+    "z": "node_red_flow_industrial_energy",
+    "name": "Máquina 04",
+    "props": [
+      {
+        "p": "payload",
+        "v": "{\"deviceId\":\"maq-004\",\"deviceKey\":\"123e4567e89b12d3a456426614174003\",\"machineName\":\"Máquina 04\",\"sector\":\"Pintura\",\"consumptionKwh\":68,\"voltage\":220,\"current\":15.5,\"status\":\"NORMAL\",\"timestamp\":\"2026-05-24T14:30:00\"}",
+        "vt": "json"
+      }
+    ],
+    "repeat": "2",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 150,
+    "y": 280,
+    "wires": [["mqtt_publish"]]
+  },
+  {
+    "id": "mqtt_publish",
+    "type": "mqtt out",
+    "z": "node_red_flow_industrial_energy",
+    "name": "Publish Energy Telemetry",
+    "topic": "industrial/machines/{{ msg.payload.deviceKey }}/energy",
+    "qos": "1",
+    "retain": false,
+    "broker": "mqtt_broker_local",
+    "x": 450,
+    "y": 190,
+    "wires": []
+  },
+  {
+    "id": "debug_telemetry",
+    "type": "debug",
+    "z": "node_red_flow_industrial_energy",
+    "name": "Dados Publicados",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 450,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "link_to_debug",
+    "type": "link out",
+    "z": "node_red_flow_industrial_energy",
+    "name": "link out",
+    "links": ["debug_telemetry"],
+    "x": 350,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "mqtt_broker_local",
+    "type": "mqtt-broker",
+    "name": "Local MQTT",
+    "broker": "127.0.0.1",
+    "port": "1883",
+    "clientid": "node-red-energy-simulator",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "birthTopic": "node-red/status",
+    "birthQos": "0",
+    "birthPayload": "online",
+    "willTopic": "node-red/status",
+    "willQos": "0",
+    "willPayload": "offline"
+  }
+]
